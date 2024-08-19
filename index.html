@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome to the Family ATM</h2>
+        <div id="login-screen">
+            <p>Please enter your PIN:</p>
+            <input type="password" id="pin-input" placeholder="Enter PIN">
+            <button onclick="login()">Login</button>
+        </div>
+
+        <div id="atm-menu" class="hidden">
+            <h3 id="welcome-message"></h3>
+            <button onclick="checkBalance()">Check Balance</button>
+            <button onclick="depositMoney()">Deposit Money</button>
+            <button onclick="withdrawMoney()">Withdraw Money</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+
+        <div id="atm-output" class="hidden">
+            <p id="output-message"></p>
+            <button onclick="backToMenu()">Back to Menu</button>
+        </div>
+    </div>
+
+    <script>
+        const accounts = {
+            '1234': {name: 'Alice', balance: 1000},
+            '5678': {name: 'Bob', balance: 1500},
+            '9101': {name: 'Charlie', balance: 2000}
+        };
+
+        let currentAccount = null;
+
+        function login() {
+            const pin = document.getElementById('pin-input').value;
+            if (accounts[pin]) {
+                currentAccount = accounts[pin];
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('atm-menu').classList.remove('hidden');
+                document.getElementById('welcome-message').innerText = Welcome, ${currentAccount.name}!;
+            } else {
+                alert('Incorrect PIN. Please try again.');
+            }
+        }
+
+        function checkBalance() {
+            document.getElementById('atm-menu').classList.add('hidden');
+            document.getElementById('atm-output').classList.remove('hidden');
+            document.getElementById('output-message').innerText = Your balance is $${currentAccount.balance};
+        }
+
+        function depositMoney() {
+            const amount = prompt('Enter deposit amount:');
+            if (amount > 0) {
+                currentAccount.balance += parseFloat(amount);
+                alert('Deposit successful!');
+                checkBalance();
+            } else {
+                alert('Invalid deposit amount.');
+            }
+        }
+
+        function withdrawMoney() {
+            const amount = prompt('Enter withdrawal amount:');
+            if (amount > 0 && amount <= currentAccount.balance) {
+                currentAccount.balance -= parseFloat(amount);
+                alert('Withdrawal successful!');
+                checkBalance();
+            } else {
+                alert('Invalid withdrawal amount or insufficient funds.');
+            }
+        }
+
+        function logout() {
+            currentAccount = null;
+            document.getElementById('atm-menu').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('pin-input').value = '';
+        }
+
+        function backToMenu() {
+            document.getElementById('atm-output').classList.add('hidden');
+            document.getElementById('atm-menu').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
